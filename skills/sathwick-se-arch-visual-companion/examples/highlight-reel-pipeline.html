@@ -1,0 +1,164 @@
+<title>Highlight Reel Pipeline</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#F5F7F8; --panel:#FFFFFF; --ink:#16293B; --muted:#6C7B88;
+  --rule:#D3DBE1; --node-stroke:#16293B; --node-fill:#FFFFFF;
+  --ctrl:#1B5E93; --data:#0E7A59; --warn:#A2661B;
+  --warn-fill:#FBF1E2; --warn-stroke:#C99446;
+  --container:#98A6B2; --marker:#16293B; --marker-ink:#FFFFFF;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#10161B; --panel:#182128; --ink:#DDE6ED; --muted:#8FA0AE;
+  --rule:#334350; --node-stroke:#5A6D7C; --node-fill:#1B242C;
+  --ctrl:#79B8E4; --data:#54C49B; --warn:#E2AA63;
+  --warn-fill:#33270F; --warn-stroke:#8A6A2E;
+  --container:#6C7E8C; --marker:#DDE6ED; --marker-ink:#10161B;
+}}
+:root[data-theme="dark"]{
+  --ground:#10161B; --panel:#182128; --ink:#DDE6ED; --muted:#8FA0AE;
+  --rule:#334350; --node-stroke:#5A6D7C; --node-fill:#1B242C;
+  --ctrl:#79B8E4; --data:#54C49B; --warn:#E2AA63;
+  --warn-fill:#33270F; --warn-stroke:#8A6A2E;
+  --container:#6C7E8C; --marker:#DDE6ED; --marker-ink:#10161B;
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;line-height:1.6}
+.wrap{max-width:1100px;margin:0 auto;padding:40px 32px 64px;display:flex;flex-direction:column;gap:28px}
+.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:500}
+h1{font-size:30px;font-weight:600;margin:6px 0 0;letter-spacing:-.01em;text-wrap:balance}
+.lede{max-width:64ch;color:var(--muted);font-size:15px;margin:10px 0 0}
+figure{margin:0;display:flex;flex-direction:column;gap:14px}
+.canvas{overflow-x:auto;background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:16px}
+.canvas svg{display:block;margin:0 auto;max-width:820px;width:100%;height:auto}
+figcaption{font-size:13px;color:var(--muted);max-width:74ch}
+.panel{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:22px 24px}
+.panel h2{font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;margin:0 0 16px;color:var(--muted)}
+pre{margin:0;font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:13px;line-height:1.85;overflow-x:auto;color:var(--ink)}
+.c{color:var(--muted)}
+.k{color:var(--ctrl)}
+.t{fill:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:15px;font-weight:500}
+.s{fill:var(--muted);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:12px}
+.e{fill:var(--muted);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:12px}
+.ct{fill:var(--container);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:12px;font-weight:600;letter-spacing:.1em}
+.node rect{fill:var(--node-fill);stroke:var(--node-stroke);stroke-width:2}
+.ghost rect{fill:var(--node-fill);stroke:var(--node-stroke);stroke-width:2;opacity:.4}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Visual companion · DAG</div>
+    <h1>Highlight Reel Pipeline</h1>
+    <p class="lede">How <code>my-video</code> turns nine raw clips and one audio track into a beat-cut 60-second reel. A sequential pipeline with one recovering catch and a composite step that runs 1800 times.</p>
+  </header>
+
+  <figure>
+    <div class="canvas">
+      <svg viewBox="0 0 800 1065" role="img" aria-label="Vertical pipeline: calculateMetadata awaits audio data, a catch supplies empty beat frames when the file is missing, detectBeats scans 1800 frames, then a map over every frame composites three parallel layers before encoding to mp4.">
+        <defs>
+          <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--node-stroke)"/></marker>
+          <marker id="aw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--warn)"/></marker>
+        </defs>
+
+        <circle cx="400" cy="52" r="10" fill="var(--marker)"/>
+        <text class="e" x="422" y="57">Start · remotion render</text>
+        <line x1="400" y1="62" x2="400" y2="94" stroke="var(--node-stroke)" stroke-width="2" marker-end="url(#a)"/>
+
+        <g class="node"><rect x="290" y="100" width="220" height="64" rx="8"/>
+          <text class="t" x="400" y="126" text-anchor="middle">calculateMetadata</text>
+          <text class="s" x="400" y="147" text-anchor="middle">Task · Root.tsx, before frame 0</text></g>
+
+        <line x1="400" y1="164" x2="400" y2="208" stroke="var(--node-stroke)" stroke-width="2" marker-end="url(#a)"/>
+
+        <g class="node"><rect x="290" y="214" width="220" height="64" rx="8"/>
+          <text class="t" x="400" y="240" text-anchor="middle">getAudioData</text>
+          <text class="s" x="400" y="261" text-anchor="middle">Task · await, staticFile</text></g>
+
+        <path d="M510 246 L665 246 L665 320" fill="none" stroke="var(--warn)" stroke-width="2" stroke-dasharray="7 6" marker-end="url(#aw)"/>
+        <text class="e" x="522" y="236" fill="var(--warn)">Catch · file missing</text>
+
+        <g><rect x="570" y="326" width="190" height="60" rx="8" fill="var(--warn-fill)" stroke="var(--warn-stroke)" stroke-width="2"/>
+          <text class="t" x="665" y="350" text-anchor="middle" fill="var(--warn)">beatFrames = []</text>
+          <text class="s" x="665" y="370" text-anchor="middle" fill="var(--warn)">Pass · hasAudio false</text></g>
+
+        <line x1="400" y1="278" x2="400" y2="322" stroke="var(--node-stroke)" stroke-width="2" marker-end="url(#a)"/>
+
+        <g class="node"><rect x="290" y="328" width="220" height="64" rx="8"/>
+          <text class="t" x="400" y="354" text-anchor="middle">detectBeats</text>
+          <text class="s" x="400" y="375" text-anchor="middle">Task · 1800-frame scan</text></g>
+        <text class="e" x="278" y="352" text-anchor="end">bass bins 0–8 · rising edge</text>
+        <text class="e" x="278" y="370" text-anchor="end">&gt; 0.15 · gap ≥ 10 frames</text>
+
+        <path d="M400 392 L400 444" fill="none" stroke="var(--node-stroke)" stroke-width="2" marker-end="url(#a)"/>
+        <path d="M665 386 L665 420 L470 420 L470 444" fill="none" stroke="var(--warn)" stroke-width="2" stroke-dasharray="7 6" marker-end="url(#aw)"/>
+        <text class="e" x="486" y="412" fill="var(--warn)">even cuts, no flashes</text>
+
+        <g class="node"><rect x="290" y="450" width="220" height="64" rx="8"/>
+          <text class="t" x="400" y="476" text-anchor="middle">HighlightReel</text>
+          <text class="s" x="400" y="497" text-anchor="middle">Task · assignClipsToBeats</text></g>
+
+        <line x1="400" y1="514" x2="400" y2="558" stroke="var(--node-stroke)" stroke-width="2" marker-end="url(#a)"/>
+
+        <rect x="100" y="564" width="610" height="248" rx="10" fill="none" stroke="var(--container)" stroke-width="1.5" stroke-dasharray="6 5"/>
+        <text class="ct" x="118" y="588">MAP · FOR EACH OF 1800 FRAMES</text>
+
+        <rect x="118" y="606" width="574" height="176" rx="10" fill="none" stroke="var(--container)" stroke-width="1.5" stroke-dasharray="6 5"/>
+        <text class="ct" x="136" y="628">PARALLEL · LAYERS, BACK TO FRONT</text>
+
+        <circle cx="400" cy="650" r="6" fill="var(--node-stroke)"/>
+        <path d="M400 656 L400 668 L220 668 L220 674" fill="none" stroke="var(--node-stroke)" stroke-width="2" marker-end="url(#a)"/>
+        <path d="M400 668 L400 674" fill="none" stroke="var(--node-stroke)" stroke-width="2" marker-end="url(#a)"/>
+        <path d="M400 668 L580 668 L580 674" fill="none" stroke="var(--node-stroke)" stroke-width="2" marker-end="url(#a)"/>
+
+        <g class="ghost"><rect x="146" y="672" width="164" height="60" rx="8"/></g>
+        <g class="ghost"><rect x="142" y="676" width="164" height="60" rx="8"/></g>
+        <g class="node"><rect x="138" y="680" width="164" height="60" rx="8"/>
+          <text class="t" x="220" y="704" text-anchor="middle">Sequence × 9</text>
+          <text class="s" x="220" y="724" text-anchor="middle">Task · per interval</text></g>
+
+        <g class="node"><rect x="318" y="680" width="164" height="60" rx="8"/>
+          <text class="t" x="400" y="704" text-anchor="middle">Audio</text>
+          <text class="s" x="400" y="724" text-anchor="middle">Task · startFrom</text></g>
+
+        <g class="node"><rect x="498" y="680" width="164" height="60" rx="8"/>
+          <text class="t" x="580" y="704" text-anchor="middle">FlashOverlay</text>
+          <text class="s" x="580" y="724" text-anchor="middle">Task · on beats</text></g>
+
+        <path d="M220 740 L220 762 L400 762" fill="none" stroke="var(--node-stroke)" stroke-width="2"/>
+        <path d="M400 740 L400 762" fill="none" stroke="var(--node-stroke)" stroke-width="2"/>
+        <path d="M580 740 L580 762 L400 762" fill="none" stroke="var(--node-stroke)" stroke-width="2"/>
+        <circle cx="400" cy="762" r="6" fill="var(--node-stroke)"/>
+
+        <line x1="400" y1="768" x2="400" y2="806" stroke="var(--node-stroke)" stroke-width="2" marker-end="url(#a)"/>
+        <line x1="400" y1="812" x2="400" y2="860" stroke="var(--node-stroke)" stroke-width="2" marker-end="url(#a)"/>
+
+        <g class="node"><rect x="290" y="866" width="220" height="64" rx="8"/>
+          <text class="t" x="400" y="892" text-anchor="middle">Encode</text>
+          <text class="s" x="400" y="913" text-anchor="middle">Task · H.264, 1080×1920</text></g>
+
+        <line x1="400" y1="930" x2="400" y2="974" stroke="var(--node-stroke)" stroke-width="2" marker-end="url(#a)"/>
+        <circle cx="400" cy="1000" r="19" fill="none" stroke="var(--data)" stroke-width="2"/>
+        <circle cx="400" cy="1000" r="11" fill="var(--data)"/>
+        <text class="e" x="430" y="995" fill="var(--data)">Succeed</text>
+        <text class="e" x="430" y="1013">out/video.mp4 · 60 s, 30 fps</text>
+      </svg>
+    </div>
+    <figcaption>The catch is the interesting edge: a missing audio file does not fail the render, it returns an empty <code>beatFrames</code> array, so <code>assignClipsToBeats</code> falls back to even 200-frame cuts and the reel ships without flashes. The nesting is the other claim — three layers composite <em>inside</em> each of 1800 iterations, which is why the <code>PARALLEL</code> container sits within the <code>MAP</code> rather than beside it.</figcaption>
+  </figure>
+
+  <div class="panel">
+    <h2>Props — resolved before frame 0, read on every frame</h2>
+<pre>type <span class="k">HighlightReelProps</span> = {
+  clips:               string[];   <span class="c">// 9 paths</span>
+  audioOffsetInFrames: number;     <span class="c">// 0 or 900</span>
+  beatFrames:          number[];   <span class="c">// [] on catch</span>
+  hasAudio:            boolean;    <span class="c">// gates &lt;Audio&gt;</span>
+}
+
+assignClipsToBeats(clips, beatFrames, 1800)
+  → Array&lt;{ src, from, duration }&gt;
+
+<span class="c">// beatFrames empty ⇒ even distribution,</span>
+<span class="c">// 1800 / 9 = 200 frames per clip</span></pre>
+  </div>
+</div>

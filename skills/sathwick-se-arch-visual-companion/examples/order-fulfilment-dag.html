@@ -1,0 +1,161 @@
+<title>Order Fulfilment Workflow</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#F5F7F8; --panel:#FFFFFF; --ink:#16293B; --muted:#6C7B88;
+  --rule:#D3DBE1; --node-stroke:#16293B; --node-fill:#FFFFFF;
+  --ctrl:#1B5E93; --data:#0E7A59; --warn:#A2661B;
+  --warn-fill:#FBF1E2; --warn-stroke:#C99446;
+  --container:#98A6B2; --marker:#16293B; --marker-ink:#FFFFFF;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#10161B; --panel:#182128; --ink:#DDE6ED; --muted:#8FA0AE;
+  --rule:#334350; --node-stroke:#5A6D7C; --node-fill:#1B242C;
+  --ctrl:#79B8E4; --data:#54C49B; --warn:#E2AA63;
+  --warn-fill:#33270F; --warn-stroke:#8A6A2E;
+  --container:#6C7E8C; --marker:#DDE6ED; --marker-ink:#10161B;
+}}
+:root[data-theme="dark"]{
+  --ground:#10161B; --panel:#182128; --ink:#DDE6ED; --muted:#8FA0AE;
+  --rule:#334350; --node-stroke:#5A6D7C; --node-fill:#1B242C;
+  --ctrl:#79B8E4; --data:#54C49B; --warn:#E2AA63;
+  --warn-fill:#33270F; --warn-stroke:#8A6A2E;
+  --container:#6C7E8C; --marker:#DDE6ED; --marker-ink:#10161B;
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;line-height:1.6}
+.wrap{max-width:1100px;margin:0 auto;padding:40px 32px 64px;display:flex;flex-direction:column;gap:28px}
+.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:500}
+h1{font-size:30px;font-weight:600;margin:6px 0 0;letter-spacing:-.01em;text-wrap:balance}
+.lede{max-width:64ch;color:var(--muted);font-size:15px;margin:10px 0 0}
+figure{margin:0;display:flex;flex-direction:column;gap:14px}
+.canvas{overflow-x:auto;background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:16px}
+.canvas svg{display:block;margin:0 auto;max-width:760px;width:100%;height:auto}
+figcaption{font-size:13px;color:var(--muted);max-width:74ch}
+.panel{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:22px 24px}
+.panel h2{font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;margin:0 0 16px;color:var(--muted)}
+.keys{display:flex;flex-direction:column;gap:13px;margin:0;padding:0;list-style:none;font-size:14px}
+.keys li{display:flex;align-items:center;gap:14px}
+.keys svg{flex:0 0 auto}
+.keys b{font-weight:500}
+.keys span{color:var(--muted)}
+.t{fill:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:15px;font-weight:500}
+.s{fill:var(--muted);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:12px}
+.e{fill:var(--muted);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:12px}
+.ct{fill:var(--container);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:12px;font-weight:600;letter-spacing:.1em}
+.node rect{fill:var(--node-fill);stroke:var(--node-stroke);stroke-width:2}
+.ghost rect{fill:var(--node-fill);stroke:var(--node-stroke);stroke-width:2;opacity:.4}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Visual companion · DAG reference</div>
+    <h1>Order Fulfilment Workflow</h1>
+    <p class="lede">A state machine drawn in Step Functions grammar: one vertical spine, explicit start and terminal states, and every fan-out enclosed in a labelled container so parallel work is unmistakable.</p>
+  </header>
+
+  <figure>
+    <div class="canvas">
+      <svg viewBox="0 0 740 1215" role="img" aria-label="Vertical workflow: validate order, choice on stock, parallel charge and reserve, map over items to pack, then ship with a catch branch to failure notification.">
+        <defs>
+          <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--node-stroke)"/></marker>
+          <marker id="aw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--warn)"/></marker>
+        </defs>
+
+        <circle cx="340" cy="52" r="10" fill="var(--marker)"/>
+        <text class="e" x="362" y="57">Start</text>
+        <line x1="340" y1="62" x2="340" y2="94" stroke="var(--node-stroke)" stroke-width="2" marker-end="url(#a)"/>
+
+        <g class="node"><rect x="240" y="100" width="200" height="64" rx="8"/>
+          <text class="t" x="340" y="126" text-anchor="middle">Validate order</text>
+          <text class="s" x="340" y="147" text-anchor="middle">Task · retry ×3, 2s backoff</text></g>
+
+        <line x1="340" y1="164" x2="340" y2="208" stroke="var(--node-stroke)" stroke-width="2" marker-end="url(#a)"/>
+
+        <g class="node"><rect x="240" y="214" width="200" height="64" rx="8"/>
+          <text class="t" x="340" y="240" text-anchor="middle">In stock?</text>
+          <text class="s" x="340" y="261" text-anchor="middle">Choice</text></g>
+
+        <path d="M340 278 L340 300 L130 300 L130 310" fill="none" stroke="var(--node-stroke)" stroke-width="2" marker-end="url(#a)"/>
+        <text class="e" x="200" y="290" text-anchor="middle">qty = 0</text>
+        <path d="M340 300 L340 454" fill="none" stroke="var(--node-stroke)" stroke-width="2" marker-end="url(#a)"/>
+        <text class="e" x="356" y="366">qty ≥ 1</text>
+
+        <g class="node"><rect x="40" y="316" width="180" height="64" rx="8"/>
+          <text class="t" x="130" y="342" text-anchor="middle">Backorder</text>
+          <text class="s" x="130" y="363" text-anchor="middle">Task</text></g>
+
+        <line x1="130" y1="380" x2="130" y2="394" stroke="var(--node-stroke)" stroke-width="2" marker-end="url(#a)"/>
+        <rect x="55" y="400" width="150" height="42" rx="21" fill="var(--warn-fill)" stroke="var(--warn-stroke)" stroke-width="2"/>
+        <text class="t" x="130" y="426" text-anchor="middle" fill="var(--warn)">Fail</text>
+
+        <rect x="110" y="460" width="470" height="212" rx="10" fill="none" stroke="var(--container)" stroke-width="1.5" stroke-dasharray="6 5"/>
+        <text class="ct" x="128" y="484">PARALLEL</text>
+
+        <circle cx="340" cy="508" r="6" fill="var(--node-stroke)"/>
+        <path d="M340 514 L340 526 L225 526 L225 548" fill="none" stroke="var(--node-stroke)" stroke-width="2" marker-end="url(#a)"/>
+        <path d="M340 526 L475 526 L475 548" fill="none" stroke="var(--node-stroke)" stroke-width="2" marker-end="url(#a)"/>
+
+        <g class="node"><rect x="140" y="554" width="170" height="60" rx="8"/>
+          <text class="t" x="225" y="578" text-anchor="middle">Charge card</text>
+          <text class="s" x="225" y="598" text-anchor="middle">Task</text></g>
+
+        <g class="node"><rect x="390" y="554" width="170" height="60" rx="8"/>
+          <text class="t" x="475" y="578" text-anchor="middle">Reserve stock</text>
+          <text class="s" x="475" y="598" text-anchor="middle">Task</text></g>
+
+        <path d="M225 614 L225 634 L340 634" fill="none" stroke="var(--node-stroke)" stroke-width="2"/>
+        <path d="M475 614 L475 634 L340 634" fill="none" stroke="var(--node-stroke)" stroke-width="2"/>
+        <circle cx="340" cy="634" r="6" fill="var(--node-stroke)"/>
+        <text class="e" x="356" y="656">both must succeed</text>
+
+        <line x1="340" y1="672" x2="340" y2="714" stroke="var(--node-stroke)" stroke-width="2" marker-end="url(#a)"/>
+
+        <rect x="170" y="720" width="340" height="152" rx="10" fill="none" stroke="var(--container)" stroke-width="1.5" stroke-dasharray="6 5"/>
+        <text class="ct" x="188" y="744">MAP · FOR EACH LINE ITEM</text>
+
+        <g class="ghost"><rect x="266" y="762" width="180" height="60" rx="8"/></g>
+        <g class="ghost"><rect x="262" y="766" width="180" height="60" rx="8"/></g>
+        <g class="node"><rect x="258" y="770" width="180" height="60" rx="8"/>
+          <text class="t" x="348" y="794" text-anchor="middle">Pack item</text>
+          <text class="s" x="348" y="814" text-anchor="middle">Task · maxConcurrency 5</text></g>
+
+        <line x1="340" y1="872" x2="340" y2="908" stroke="var(--node-stroke)" stroke-width="2" marker-end="url(#a)"/>
+
+        <g class="node"><rect x="240" y="914" width="200" height="64" rx="8"/>
+          <text class="t" x="340" y="940" text-anchor="middle">Ship order</text>
+          <text class="s" x="340" y="961" text-anchor="middle">Task · timeout 30s</text></g>
+
+        <path d="M440 946 L600 946 L600 1018" fill="none" stroke="var(--warn)" stroke-width="2" stroke-dasharray="7 6" marker-end="url(#aw)"/>
+        <text class="e" x="452" y="936" fill="var(--warn)">Catch · States.Timeout</text>
+
+        <g><rect x="510" y="1024" width="180" height="60" rx="8" fill="var(--warn-fill)" stroke="var(--warn-stroke)" stroke-width="2"/>
+          <text class="t" x="600" y="1048" text-anchor="middle" fill="var(--warn)">Notify ops</text>
+          <text class="s" x="600" y="1068" text-anchor="middle" fill="var(--warn)">Task</text></g>
+
+        <line x1="600" y1="1084" x2="600" y2="1122" stroke="var(--warn)" stroke-width="2" marker-end="url(#aw)"/>
+        <rect x="525" y="1128" width="150" height="42" rx="21" fill="var(--warn-fill)" stroke="var(--warn-stroke)" stroke-width="2"/>
+        <text class="t" x="600" y="1154" text-anchor="middle" fill="var(--warn)">Fail</text>
+
+        <line x1="340" y1="978" x2="340" y2="1024" stroke="var(--node-stroke)" stroke-width="2" marker-end="url(#a)"/>
+        <circle cx="340" cy="1050" r="19" fill="none" stroke="var(--data)" stroke-width="2"/>
+        <circle cx="340" cy="1050" r="11" fill="var(--data)"/>
+        <text class="e" x="370" y="1055" fill="var(--data)">Succeed</text>
+      </svg>
+    </div>
+    <figcaption>The two containers are the point of this layout. Without them, "Charge card" and "Reserve stock" sitting side by side is ambiguous — they could be alternative branches. The dashed <b>Parallel</b> box plus the single split and join dots say both run and both must finish. The <b>Map</b> box with stacked cards says one state runs N times, which no arrow arrangement conveys on its own.</figcaption>
+  </figure>
+
+  <div class="panel">
+    <h2>State grammar</h2>
+    <ul class="keys">
+      <li><svg width="52" height="26" aria-hidden="true"><circle cx="14" cy="13" r="9" fill="var(--marker)"/></svg><span><b>Start</b> — filled dot, one per diagram, always at the top</span></li>
+      <li><svg width="52" height="26" aria-hidden="true"><rect x="1" y="2" width="48" height="22" rx="7" fill="var(--node-fill)" stroke="var(--node-stroke)" stroke-width="2"/></svg><span><b>State</b> — rounded rect; subtitle carries the type and its retry, timeout, or concurrency</span></li>
+      <li><svg width="52" height="26" aria-hidden="true"><circle cx="14" cy="13" r="5" fill="var(--node-stroke)"/><path d="M14 18 L14 22" stroke="var(--node-stroke)" stroke-width="2"/><path d="M6 22 L42 22" stroke="var(--node-stroke)" stroke-width="2"/></svg><span><b>Split / join dot</b> — one point in, one point out; never N loose diagonals</span></li>
+      <li><svg width="52" height="26" aria-hidden="true"><rect x="1" y="2" width="48" height="22" rx="6" fill="none" stroke="var(--container)" stroke-width="1.5" stroke-dasharray="6 5"/></svg><span><b>Container</b> — dashed, labelled <code>PARALLEL</code> or <code>MAP</code>; the only way branch semantics read unambiguously</span></li>
+      <li><svg width="52" height="26" aria-hidden="true"><rect x="9" y="1" width="34" height="20" rx="6" fill="var(--node-fill)" stroke="var(--node-stroke)" stroke-width="2" opacity=".4"/><rect x="1" y="5" width="34" height="20" rx="6" fill="var(--node-fill)" stroke="var(--node-stroke)" stroke-width="2"/></svg><span><b>Stacked cards</b> — inside a Map, marks the state that runs per element</span></li>
+      <li><svg width="52" height="26" aria-hidden="true"><line x1="2" y1="13" x2="40" y2="13" stroke="var(--warn)" stroke-width="2" stroke-dasharray="7 6"/><path d="M36 8L44 13L36 18z" fill="var(--warn)"/></svg><span><b>Catch edge</b> — leaves the right side, labelled with the error name</span></li>
+      <li><svg width="52" height="26" aria-hidden="true"><circle cx="14" cy="13" r="11" fill="none" stroke="var(--data)" stroke-width="2"/><circle cx="14" cy="13" r="6" fill="var(--data)"/></svg><span><b>Succeed</b> — ringed dot · <b>Fail</b> — amber pill. Every path ends in one</span></li>
+    </ul>
+  </div>
+</div>

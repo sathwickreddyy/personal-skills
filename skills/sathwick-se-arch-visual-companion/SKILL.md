@@ -1,5 +1,5 @@
 ---
-name: visual-companion
+name: sathwick-se-arch-visual-companion
 description: Use when explaining any technical flow, architecture, pipeline, DAG, state machine, or system behavior and the reader would understand it faster from a diagram - request lifecycles, microservices, queues, workers, ETL, retries and backoff, dead-letter queues, caching, DB read/write paths, fan-out/fan-in, orchestration, or algorithm execution.
 ---
 
@@ -15,7 +15,7 @@ Use the conversation as the source of truth. Do not invent components, steps, or
 
 There is exactly one reference image, deliberately: it carries the whole vocabulary in a single read — every shape, a curved cross-lane read, a long return edge up the right margin, 12 numbered steps across 3 lanes. Read it once per task, not once per diagram, and never read it twice.
 
-`examples/*.html` are the source for that reference plus a second diagram (`highlight-reel-pipeline`, which adds an amber degraded path and a fan-out/fan-in). They are text — open one **only** to look up an exact number you are about to guess at: gap width, node size, label offset, cylinder path math. Grep for the value; do not read the file whole.
+`examples/*.html` are the source for that reference plus two DAGs — `order-fulfilment-dag` (choice, parallel, map, catch-to-failure, both terminals) and `highlight-reel-pipeline` (a **recovering** catch that rejoins the main path, and a `PARALLEL` nested inside a `MAP`). Read one of those two before drawing any DAG. They are text — open one **only** to look up an exact number you are about to guess at: gap width, node size, label offset, container padding, cylinder path math. Grep for the value; do not read the file whole.
 
 ## Core principle
 
@@ -36,7 +36,7 @@ If the diagram would still be correct with the arrows removed, it is the wrong d
 | Concept | Form | Show |
 |---|---|---|
 | Request flow, service interaction, end-to-end behavior | **Runtime flow** | entry point, processing path, downstream calls, async steps, persistence, completion |
-| Dependency graph, job pipeline, staged workflow | **DAG / pipeline** | tasks as nodes, dependencies as edges, fan-out/fan-in, parallel branches, terminal outputs |
+| Dependency graph, job pipeline, staged workflow, state machine | **DAG** — see *Step Functions grammar* below | vertical spine, explicit terminals, parallel and map containers, catch edges |
 | Status changes, lifecycle | **State transition** | states, triggers, retry loops, failure and terminal states |
 | Two systems or approaches | **Comparison** | system A left, system B right, separate paths, trade-offs annotated near the relevant part |
 | Algorithm or process execution | **Step-by-step walkthrough** | ordered steps, decisions, loops, outputs, short "why" annotations |
@@ -52,9 +52,42 @@ Route on the verb, not the noun: "walk me through" → flow; "what depends on wh
 - content margins x=90 to x=1610
 - publish it — the reader zooms, revisits, and shares it
 
+## DAGs and workflows — Step Functions grammar
+
+A DAG, state machine, or job workflow is **not** drawn as a swimlane architecture. It gets the AWS Step Functions layout, because that grammar makes branch semantics unambiguous where plain arrows do not. This overrides the left-to-right default and the 1700px canvas.
+
+- **Vertical spine, top to bottom.** One centre line. Narrow and tall — roughly `viewBox="0 0 740 H"`, not a wide canvas.
+- **Explicit terminals.** A filled dot labelled `Start` at the top. Every path ends in a ringed dot (`Succeed`, green) or an amber pill (`Fail`). No path may just stop.
+- **States are rounded rects** (`rx=8`), title plus a subtitle carrying the type and its configuration: `Task · retry ×3, 2s backoff`, `Choice`, `Task · timeout 30s`, `Task · maxConcurrency 5`.
+- **Branches leave one point and rejoin at one point.** Draw a small filled dot (`r=6`) at the split and another at the join, with orthogonal L-bends to the branch lanes. Never N loose diagonals from a box edge.
+- **Choice edges carry the actual condition** — `qty = 0`, `qty ≥ 1` — not "yes" and "no".
+- **Catch edges leave the right side**, dashed and amber, labelled with the error: `Catch · States.Timeout`. They run down to their own handler and terminal.
+
+### Containers are the whole point
+
+Two boxes side by side are ambiguous — they could be alternative branches. A dashed container removes the ambiguity, and is mandatory:
+
+| Semantics | Draw |
+|---|---|
+| All branches run, all must finish | Dashed rect, label `PARALLEL`, split dot in, join dot out |
+| One state runs N times over a collection | Dashed rect, label `MAP · FOR EACH <item>`, and the inner state drawn as **stacked cards** |
+
+Label at the container's top-left inside, uppercase, `letter-spacing: 0.1em`, in the muted container colour. Keep 20px of padding between the container edge and anything inside it, and never let an unrelated node overlap a container — a terminal from a side branch drifting into a `PARALLEL` box makes the diagram read as false.
+
+`examples/order-fulfilment-dag.html` is the worked reference for all of the above: choice, parallel, map, catch, and both terminal kinds.
+
 ## Swimlanes
 
-Divide the canvas into horizontal lanes by **responsibility**, separated by dotted rules. Name each lane with what it is *and* what it carries:
+**First check that lanes are the right form at all.** Lanes carry *concurrent responsibilities* — a control plane and a data plane are live at the same time, which is why they deserve parallel bands.
+
+Apply this test before drawing a single lane: **can lane B be busy while lane A is still working?**
+
+- Yes → swimlanes. Control plane vs data plane vs completion path.
+- No, B only starts once A finishes → **these are sequential stages, not lanes. Draw it as a DAG** (see the Step Functions grammar above).
+
+Sequential phases forced into lanes fail in a specific, recognisable way: each lane has to sweep back to the left margin to begin, so you get a long return edge crossing the whole canvas, and the lower-left of every lane sits empty. If your layout is growing a full-width horizontal connector just to restart a lane, you picked the wrong form — stop and redraw it vertically.
+
+Once lanes are the right call, divide the canvas into horizontal lanes by **responsibility**, separated by dotted rules. Name each lane with what it is *and* what it carries:
 
 ```
 CONTROL PLANE · requests + metadata
@@ -172,4 +205,7 @@ Below the canvas, add the panels that make it self-contained:
 | Every component in the system | Cut to the mechanisms the explanation needs |
 | Lines crossing each other | Reroute with L-bends; move a node if needed |
 | Every node drawn as a rounded rect | Cylinders and circles get real arcs — the silhouette is the signal |
+| Sequential stages drawn as swimlanes | Lanes are for concurrent work. Sequential → DAG, drawn vertically |
+| A full-width edge sweeping back to restart a lane | The layout is telling you it is a DAG. Redraw it |
+| An invented node so a fan-in has somewhere to land | Land the join on a real state, or use a join dot |
 | Cycle drawn as a ring | Linear layout with a labeled return arrow |
