@@ -51,11 +51,44 @@ skills/                # every directory here ships with the plugin
 tools/
 ```
 
-Adding a skill means adding a directory under `skills/` — no manifest edit needed. Bump `version` in **both** manifests when you want installed copies to pick changes up, then validate before pushing:
+Adding a skill means adding a directory under `skills/` — the manifests never enumerate them, so there's no list to keep in sync.
+
+## Publishing a change
+
+**1. Edit, bump, validate.** Bump `version` in **both** manifests — `plugin update` compares against it, so a push without a bump is invisible to installed copies.
 
 ```bash
 claude plugin validate . --strict
 ```
+
+**2. Push.**
+
+```bash
+git push origin main
+```
+
+**3. Update each machine.** Two commands, not one:
+
+```bash
+claude plugin marketplace update sathwick-marketplace
+claude plugin update sathwick-skills@sathwick-marketplace
+```
+
+Then restart Claude Code, and confirm with:
+
+```bash
+claude plugin details sathwick-skills
+```
+
+### Two things that look like failures but aren't
+
+**`plugin update` right after a push reports nothing to do.** It compares against a *cached* copy of the marketplace listing, which doesn't refresh on its own — so it's still reading the old version and is correctly finding no change. Always run `marketplace update` first. That's step 3's first line, and it's the step that's easy to drop.
+
+**Bare `claude plugin update sathwick-skills` fails with `Plugin "sathwick-skills" not found`** even while `plugin list` shows it installed and enabled. Use the qualified `plugin@marketplace` form.
+
+### Renaming a skill
+
+The directory name, the `name:` in the SKILL.md frontmatter, and the id Claude loads it under are all the same string — rename all of them together or the skill won't load. Under the plugin it's addressed as `sathwick-skills:<skill-name>`, so keep the skill name from restating the plugin's. A rename retires the old id, so it always needs a version bump.
 
 ## Editing
 
