@@ -45,4 +45,32 @@ Produces a full-width, swimlaned architecture diagram as a published HTML artifa
 
 Shape vocabulary is fixed so diagrams stay scannable across sessions: vertical cylinder for databases, horizontal cylinder for queues and streams, circle for blob storage, stacked rects for worker pools, plain rect for services. The skill carries copy-pasteable SVG arc paths for the three that need real path math.
 
-[`examples/highlight-reel-pipeline.html`](examples/highlight-reel-pipeline.html) is a reference output in the house style — open it locally to see the target for canvas size, lane headers, marker placement, and routing.
+### Reference images
+
+The skill's first instruction is to look at its reference images before drawing anything. That's what keeps the output from drifting session to session — rules describe the style, but the picture *is* the style.
+
+```
+skills/visual-companion/
+├── SKILL.md
+├── references/                            # what Claude looks at first
+│   ├── video-upload-architecture.png      # canonical, light
+│   ├── video-upload-architecture-dark.png # same page, dark theme
+│   └── highlight-reel-pipeline.png
+└── examples/                              # the source Claude reads for exact numbers
+    ├── video-upload-architecture.html
+    └── highlight-reel-pipeline.html
+```
+
+They live *inside* `skills/visual-companion/` on purpose — a symlinked skill directory has to carry them along, so they can't sit at the repo root.
+
+[`video-upload-architecture`](skills/visual-companion/examples/video-upload-architecture.html) is the canonical one: it exercises every shape in the vocabulary, a curved cross-lane read, and a long return edge up the right margin, across 12 numbered steps and 3 lanes.
+
+### Regenerating reference images
+
+After editing an example, re-render so the images stay in sync:
+
+```bash
+./tools/render-references.sh
+```
+
+Uses headless Chrome. Override the binary with `CHROME=/path/to/chrome` on Linux.

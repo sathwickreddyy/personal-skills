@@ -9,6 +9,18 @@ Produce a visual companion for the technical concept currently being discussed.
 
 Use the conversation as the source of truth. Do not invent components, steps, or behavior that were not established.
 
+## Look at the references before you draw
+
+**Read `references/video-upload-architecture.png` first, every time.** It is the house style, and looking at it is faster and more reliable than reconstructing the style from the rules below. Do not skip it because the rules "sound clear" — the rules are a checklist for a picture you have already seen, not a substitute for seeing it.
+
+| File | What it anchors |
+|---|---|
+| `references/video-upload-architecture.png` | The canonical example. Every shape in the vocabulary, a curved cross-lane read, a long return edge up the right margin, 12 steps across 3 lanes. |
+| `references/highlight-reel-pipeline.png` | A smaller 3-lane flow with an amber degraded path and a fan-out/fan-in. |
+| `examples/*.html` | The source for both. Read these for exact coordinates, spacing, and path math instead of guessing. |
+
+When a layout question comes up mid-draw — how much gap, how big a node, where the label sits, how a cylinder is built — open the matching example and copy the numbers.
+
 ## Core principle
 
 Never produce a generic overview diagram. The visual must explain **behavior**, not just structure:
