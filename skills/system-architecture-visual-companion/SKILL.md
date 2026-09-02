@@ -119,7 +119,7 @@ Never color by step index. A node's color says which flow it belongs to.
 
 Every meaningful edge carries a filled navy circle (r≈14) with a white number, centered on the arrow. Number in execution order across the whole diagram, lanes included. Side paths get numbers when they are part of the sequence; pure annotations do not.
 
-## Shapes — be consistent, and key them
+## Shapes — be consistent
 
 | Node | Shape |
 |---|---|
@@ -180,10 +180,11 @@ Multi-line annotations beside an arrow are fine. Sentences on an arrow are not.
 
 ## Panels
 
-Below the canvas, add the panels that make it self-contained:
+Below the canvas, add a panel only when it carries something the canvas cannot:
 
-- **SHAPE KEY** — every shape used, with its meaning. Only shapes actually on the canvas.
 - **SCHEMA / PROPS** — the data model or type the flow moves around, when one exists.
+
+**No shape key.** Every node is already labelled, the silhouettes are the vocabulary, and lane headers are coloured to match their flow — a panel restating all of that is a legend for a picture that already reads. If one encoding genuinely needs naming, put it in a clause of the figure caption, not in a panel.
 
 ## Before shipping
 
@@ -205,6 +206,7 @@ Below the canvas, add the panels that make it self-contained:
 | Every component in the system | Cut to the mechanisms the explanation needs |
 | Lines crossing each other | Reroute with L-bends; move a node if needed |
 | Every node drawn as a rounded rect | Cylinders and circles get real arcs — the silhouette is the signal |
+| A shape key restating labelled nodes | Cut it. The canvas already says which box is the database |
 | Sequential stages drawn as swimlanes | Lanes are for concurrent work. Sequential → DAG, drawn vertically |
 | A full-width edge sweeping back to restart a lane | The layout is telling you it is a DAG. Redraw it |
 | An invented node so a fan-in has somewhere to land | Land the join on a real state, or use a join dot |

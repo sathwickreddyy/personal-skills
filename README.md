@@ -99,7 +99,7 @@ The directory name, the `name:` in the SKILL.md frontmatter, and the id Claude l
 
 ## About system-architecture-visual-companion
 
-Produces a full-width, swimlaned architecture diagram as a published HTML artifact — not an inline chat sketch. Lanes by responsibility, numbered step markers in execution order, two-color flow encoding (control vs data), solid/dashed for sync vs async, and a shape key.
+Produces a full-width, swimlaned architecture diagram as a published HTML artifact — not an inline chat sketch. Lanes by responsibility, numbered step markers in execution order, two-color flow encoding (control vs data), and solid/dashed for sync vs async. No shape key — the nodes are labelled and the lane headers carry the flow colors, so a legend restating them is noise.
 
 Shape vocabulary is fixed so diagrams stay scannable across sessions: vertical cylinder for databases, horizontal cylinder for queues and streams, circle for blob storage, stacked rects for worker pools, plain rect for services. The skill carries copy-pasteable SVG arc paths for the three that need real path math.
 
