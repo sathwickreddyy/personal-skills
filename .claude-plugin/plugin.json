@@ -1,0 +1,19 @@
+{
+  "name": "sathwick-skills",
+  "description": "Personal skills library: hand-authored architecture, pipeline, and DAG diagrams published as full-width artifacts",
+  "version": "1.0.0",
+  "author": {
+    "name": "Sathwick Reddy",
+    "email": "sathwickreddyy@outlook.com"
+  },
+  "homepage": "https://github.com/sathwickreddyy/personal-skills",
+  "repository": "https://github.com/sathwickreddyy/personal-skills",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "diagrams",
+    "architecture",
+    "dag",
+    "visualization"
+  ]
+}

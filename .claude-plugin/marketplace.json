@@ -1,0 +1,23 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "sathwick-marketplace",
+  "description": "Sathwick's personal Claude Code marketplace",
+  "owner": {
+    "name": "Sathwick Reddy",
+    "email": "sathwickreddyy@outlook.com"
+  },
+  "plugins": [
+    {
+      "name": "sathwick-skills",
+      "description": "Personal skills library: hand-authored architecture, pipeline, and DAG diagrams published as full-width artifacts",
+      "version": "1.0.0",
+      "source": "./",
+      "category": "development",
+      "author": {
+        "name": "Sathwick Reddy",
+        "email": "sathwickreddyy@outlook.com"
+      },
+      "homepage": "https://github.com/sathwickreddyy/personal-skills"
+    }
+  ]
+}

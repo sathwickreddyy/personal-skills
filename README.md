@@ -10,26 +10,51 @@ Portable [Claude Code](https://claude.com/claude-code) skills. Clone on any mach
 
 ## Install on a new machine
 
+This repo is its own marketplace, so there's nothing to clone:
+
 ```bash
-git clone https://github.com/<you>/personal-skills.git ~/personal-skills
+claude plugin marketplace add sathwickreddyy/personal-skills
+claude plugin install sathwick-skills@sathwick-marketplace
+```
+
+Restart Claude Code and every skill under `skills/` is live. Confirm with `claude plugin list`.
+
+Pull later changes with:
+
+```bash
+claude plugin update sathwick-skills
+```
+
+The same two steps work from inside a session as `/plugin marketplace add …` and `/plugin install …`.
+
+### Or clone and symlink
+
+Use this when you want to edit the skills in place and see changes without a plugin update:
+
+```bash
+git clone https://github.com/sathwickreddyy/personal-skills.git ~/personal-skills
 mkdir -p ~/.claude/skills
-ln -s ~/personal-skills/skills/sathwick-se-arch-visual-companion ~/.claude/skills/sathwick-se-arch-visual-companion
-```
-
-Symlinking means `git pull` updates the skill everywhere at once. If you'd rather not link, copy instead — but you'll have to re-copy after every change:
-
-```bash
-cp -R ~/personal-skills/skills/sathwick-se-arch-visual-companion ~/.claude/skills/
-```
-
-Either way, Claude Code picks the skill up on the next session start. Confirm with `/skills`, or just ask for something the description matches.
-
-## Link everything at once
-
-```bash
 for d in ~/personal-skills/skills/*/; do
   ln -sfn "$d" ~/.claude/skills/"$(basename "$d")"
 done
+```
+
+**Pick one or the other.** Installing the plugin while a symlink of the same skill sits in `~/.claude/skills/` loads it twice.
+
+## Repo layout
+
+```
+.claude-plugin/
+├── plugin.json        # this repo is the `sathwick-skills` plugin
+└── marketplace.json   # …and the `sathwick-marketplace` that serves it
+skills/                # every directory here ships with the plugin
+tools/
+```
+
+Adding a skill means adding a directory under `skills/` — no manifest edit needed. Bump `version` in **both** manifests when you want installed copies to pick changes up, then validate before pushing:
+
+```bash
+claude plugin validate . --strict
 ```
 
 ## Editing
