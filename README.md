@@ -1,12 +1,12 @@
 # personal-skills
 
-Portable [Claude Code](https://claude.com/claude-code) skills. Clone on any machine, link into `~/.claude/skills/`, and they become available in every session.
+Portable [Claude Code](https://claude.com/claude-code) skills, packaged as a self-hosted plugin marketplace. Install on any machine with two commands and they're available in every session.
 
 ## Skills
 
 | Skill | Use when |
 |---|---|
-| [sathwick-se-arch-visual-companion](skills/sathwick-se-arch-visual-companion/SKILL.md) | Explaining a technical flow, architecture, pipeline, DAG, state machine, or system behavior where a diagram lands faster than prose. |
+| [system-architecture-visual-companion](skills/system-architecture-visual-companion/SKILL.md) | Explaining a technical flow, architecture, pipeline, DAG, state machine, or system behavior where a diagram lands faster than prose. |
 
 ## Install on a new machine
 
@@ -64,7 +64,7 @@ claude plugin validate . --strict
 - `name` — letters, numbers, hyphens only; must match the directory name
 - `description` — **triggering conditions only**, starting with "Use when…". Do not summarize the skill's workflow here: Claude will follow the description and skip the body.
 
-## About sathwick-se-arch-visual-companion
+## About system-architecture-visual-companion
 
 Produces a full-width, swimlaned architecture diagram as a published HTML artifact — not an inline chat sketch. Lanes by responsibility, numbered step markers in execution order, two-color flow encoding (control vs data), solid/dashed for sync vs async, and a shape key.
 
@@ -77,7 +77,7 @@ Shape vocabulary is fixed so diagrams stay scannable across sessions: vertical c
 The skill's first instruction is to look at its reference image before drawing anything. That's what keeps the output from drifting session to session — rules describe the style, but the picture *is* the style.
 
 ```
-skills/sathwick-se-arch-visual-companion/
+skills/system-architecture-visual-companion/
 ├── SKILL.md
 ├── references/
 │   └── video-upload-architecture.png   # the one image Claude looks at
@@ -87,7 +87,7 @@ skills/sathwick-se-arch-visual-companion/
     └── highlight-reel-pipeline.html     # DAG with a recovering catch, parallel-in-map
 ```
 
-They live *inside* `skills/sathwick-se-arch-visual-companion/` on purpose — a symlinked skill directory has to carry them along, so they can't sit at the repo root.
+They live *inside* `skills/system-architecture-visual-companion/` on purpose — the skill directory is the unit that travels, whether it ships in the plugin or is symlinked, so they can't sit at the repo root.
 
 **Exactly one reference image, on purpose.** Every PNG costs roughly 2.5k tokens each time the skill runs, so the reference is the single diagram that carries the whole vocabulary: every shape, a curved cross-lane read, a long return edge up the right margin, 12 numbered steps across 3 lanes. Extra angles live in `examples/` as HTML, which is text — cheap to grep, and only opened when a specific number is needed.
 

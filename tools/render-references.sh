@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Regenerate skills/visual-companion/references/*.png from examples/*.html
+# Regenerate skills/system-architecture-visual-companion/references/*.png from examples/*.html
 # Run after editing any example so the reference images stay in sync.
 set -euo pipefail
 
 CHROME="${CHROME:-/Applications/Google Chrome.app/Contents/MacOS/Google Chrome}"
 [ -x "$CHROME" ] || { echo "Chrome not found. Set CHROME=/path/to/chrome" >&2; exit 1; }
 
-DIR="$(cd "$(dirname "$0")/.." && pwd)/skills/visual-companion"
+DIR="$(cd "$(dirname "$0")/.." && pwd)/skills/system-architecture-visual-companion"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 

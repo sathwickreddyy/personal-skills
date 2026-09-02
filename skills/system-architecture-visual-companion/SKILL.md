@@ -1,5 +1,5 @@
 ---
-name: sathwick-se-arch-visual-companion
+name: system-architecture-visual-companion
 description: Use when explaining any technical flow, architecture, pipeline, DAG, state machine, or system behavior and the reader would understand it faster from a diagram - request lifecycles, microservices, queues, workers, ETL, retries and backoff, dead-letter queues, caching, DB read/write paths, fan-out/fan-in, orchestration, or algorithm execution.
 ---
 
