@@ -184,7 +184,7 @@ Below the canvas, add a panel only when it carries something the canvas cannot:
 
 - **SCHEMA / PROPS** — the data model or type the flow moves around, when one exists.
 
-**No shape key.** Every node is already labelled, the silhouettes are the vocabulary, and lane headers are coloured to match their flow — a panel restating all of that is a legend for a picture that already reads. If one encoding genuinely needs naming, put it in a clause of the figure caption, not in a panel.
+**No shape key, and no state-grammar key either.** Every node is already labelled, the silhouettes are the vocabulary, lane headers are coloured to match their flow, and on a DAG the `Start` dot, containers, and terminals all carry their names on the canvas — a panel restating any of that is a legend for a picture that already reads. If one encoding genuinely needs naming, put it in a clause of the figure caption, not in a panel.
 
 ## Before shipping
 
@@ -206,7 +206,7 @@ Below the canvas, add a panel only when it carries something the canvas cannot:
 | Every component in the system | Cut to the mechanisms the explanation needs |
 | Lines crossing each other | Reroute with L-bends; move a node if needed |
 | Every node drawn as a rounded rect | Cylinders and circles get real arcs — the silhouette is the signal |
-| A shape key restating labelled nodes | Cut it. The canvas already says which box is the database |
+| A shape or grammar key restating labelled nodes | Cut it. The canvas already says which box is the database |
 | Sequential stages drawn as swimlanes | Lanes are for concurrent work. Sequential → DAG, drawn vertically |
 | A full-width edge sweeping back to restart a lane | The layout is telling you it is a DAG. Redraw it |
 | An invented node so a fan-in has somewhere to land | Land the join on a real state, or use a join dot |
