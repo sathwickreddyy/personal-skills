@@ -19,7 +19,7 @@ render() { # <example-name> <light|dark> <output.png>
   echo "  $3"
 }
 
+# One reference image only — every extra PNG costs ~2.5k tokens each time the
+# skill is used. The examples/*.html sources cover the rest, read on demand.
 echo "rendering →"
 render video-upload-architecture light video-upload-architecture.png
-render video-upload-architecture dark  video-upload-architecture-dark.png
-render highlight-reel-pipeline  light  highlight-reel-pipeline.png

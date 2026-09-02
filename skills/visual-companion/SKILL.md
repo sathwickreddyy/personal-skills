@@ -9,17 +9,13 @@ Produce a visual companion for the technical concept currently being discussed.
 
 Use the conversation as the source of truth. Do not invent components, steps, or behavior that were not established.
 
-## Look at the references before you draw
+## Look at the reference before you draw
 
-**Read `references/video-upload-architecture.png` first, every time.** It is the house style, and looking at it is faster and more reliable than reconstructing the style from the rules below. Do not skip it because the rules "sound clear" — the rules are a checklist for a picture you have already seen, not a substitute for seeing it.
+**Read `references/video-upload-architecture.png` once, before drawing.** It is the house style, and looking at it is faster and more reliable than reconstructing the style from the rules below. Do not skip it because the rules "sound clear" — the rules are a checklist for a picture you have already seen, not a substitute for seeing it.
 
-| File | What it anchors |
-|---|---|
-| `references/video-upload-architecture.png` | The canonical example. Every shape in the vocabulary, a curved cross-lane read, a long return edge up the right margin, 12 steps across 3 lanes. |
-| `references/highlight-reel-pipeline.png` | A smaller 3-lane flow with an amber degraded path and a fan-out/fan-in. |
-| `examples/*.html` | The source for both. Read these for exact coordinates, spacing, and path math instead of guessing. |
+There is exactly one reference image, deliberately: it carries the whole vocabulary in a single read — every shape, a curved cross-lane read, a long return edge up the right margin, 12 numbered steps across 3 lanes. Read it once per task, not once per diagram, and never read it twice.
 
-When a layout question comes up mid-draw — how much gap, how big a node, where the label sits, how a cylinder is built — open the matching example and copy the numbers.
+`examples/*.html` are the source for that reference plus a second diagram (`highlight-reel-pipeline`, which adds an amber degraded path and a fan-out/fan-in). They are text — open one **only** to look up an exact number you are about to guess at: gap width, node size, label offset, cylinder path math. Grep for the value; do not read the file whole.
 
 ## Core principle
 
