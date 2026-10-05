@@ -1,13 +1,15 @@
 # personal-skills
 
-Portable [Claude Code](https://claude.com/claude-code) skills, packaged as a self-hosted plugin marketplace. Install on any machine with two commands and they're available in every session.
+Portable [Claude Code](https://claude.com/claude-code) skills for designing and explaining system architecture, packaged as a self-hosted plugin marketplace. Install on any machine with two commands and they're available in every session.
 
+The current plugin release is **1.3.0**. It contains two complementary skills: one for building and evolving a system design, and one for explaining an established technical flow with a detailed visual.
 
 ## Skills
 
 | Skill | Use when |
 |---|---|
 | [system-architecture-visual-companion](skills/system-architecture-visual-companion/SKILL.md) | Explaining a technical flow, architecture, pipeline, DAG, state machine, or system behavior where a diagram lands faster than prose. |
+| [excali-draw-style-visual-companion](skills/excali-draw-style-visual-companion/SKILL.md) | Starting a high-level system design, revising an existing architecture, exploring scaling choices, or refining an Excalidraw-style diagram. |
 
 ## Install on a new machine
 
@@ -48,8 +50,10 @@ done
 .claude-plugin/
 ├── plugin.json        # this repo is the `sathwick-skills` plugin
 └── marketplace.json   # …and the `sathwick-marketplace` that serves it
-skills/                # every directory here ships with the plugin
-tools/
+skills/
+├── system-architecture-visual-companion/  # flow and DAG explanations
+└── excali-draw-style-visual-companion/     # design, revision, and scaling workflows
+tools/                 # reference-image rendering helper
 ```
 
 Adding a skill means adding a directory under `skills/` — the manifests never enumerate them, so there's no list to keep in sync.
@@ -97,6 +101,12 @@ The directory name, the `name:` in the SKILL.md frontmatter, and the id Claude l
 
 - `name` — letters, numbers, hyphens only; must match the directory name
 - `description` — **triggering conditions only**, starting with "Use when…". Do not summarize the skill's workflow here: Claude will follow the description and skip the body.
+
+## About excali-draw-style-visual-companion
+
+This skill starts with a small working architecture, traces a concrete request from entry to response, and explains why each component is present. Follow-up requests can revise the adopted design, compare alternatives, or explore scaling and reliability trade-offs. Its four focused workflows cover new designs, revisions, scaling, and diagram rendering.
+
+It keeps an editable diagram and a decision record so later revisions retain the current stage, assumptions, and earlier design choices. When no output format is requested, it creates a self-contained local HTML file with inline SVG. Its visual grammar and example diagrams are in [`references/`](skills/excali-draw-style-visual-companion/references/); the examples guide drawing conventions without fixing the architecture.
 
 ## About system-architecture-visual-companion
 
