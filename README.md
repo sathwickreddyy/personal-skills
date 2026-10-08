@@ -1,7 +1,6 @@
 # personal-skills
 
 Portable [Claude Code](https://claude.com/claude-code) skills for designing and explaining system architecture, packaged as a self-hosted plugin marketplace. Install on any machine with two commands and they're available in every session.
-
 The current plugin release is **1.3.0**. It contains two complementary skills: one for building and evolving a system design, and one for explaining an established technical flow with a detailed visual.
 
 ## Skills
